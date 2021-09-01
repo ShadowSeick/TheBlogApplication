@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,6 +27,9 @@ namespace TheBlogApplication.Services
 
         public async Task ManageDataAsync()
         {
+            //Task: Create the database from the Migrations
+            await _dbContext.Database.MigrateAsync();
+
             //Task 1: Seed a few Roles into the system
             await SeedRolesAsync();
 
@@ -63,14 +67,14 @@ namespace TheBlogApplication.Services
             {
                 Email = "alcolka@gmail.com",
                 UserName = "alcolka@gmail.com",
-                FirstName = "Adrián",
-                LastName = "Muñoz",
-                PhoneNumber = "901283049",
+                FirstName = "Jon",
+                LastName = "Doe",
+                PhoneNumber = "(800) 500-1213",
                 EmailConfirmed = true
             };
 
             //Step 2: Use the UserManager to create a new user that is defined by the adminUser
-            await _userManager.CreateAsync(adminUser, "ASDF!1234");
+            await _userManager.CreateAsync(adminUser, "Abc&123!");
 
             //Step 3: Add this new user to the Adminsitrator role
             await _userManager.AddToRoleAsync(adminUser, BlogRole.Administrator.ToString());
@@ -80,24 +84,18 @@ namespace TheBlogApplication.Services
             {
                 Email = "adrian.munoz.gonza@gmail.com",
                 UserName = "adrian.munoz.gonza@gmail.com",
-                FirstName = "Adrián",
-                LastName = "Muñoz",
-                PhoneNumber = "90128304",
+                FirstName = "Jon",
+                LastName = "Smith",
+                PhoneNumber = "(800) 555-1212",
                 EmailConfirmed = true
             };
 
             //Step 2: Use the UserManager to create a new user that is defined by the adminUser
-            await _userManager.CreateAsync(modUser, "ASDF!1234");
+            await _userManager.CreateAsync(modUser, "Abc&123!");
 
             //Step 3: Add this new user to the Adminsitrator role
             await _userManager.AddToRoleAsync(modUser, BlogRole.Moderator.ToString());
         }
-
-
-
-
-
-
 
     }
 }

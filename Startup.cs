@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 using TheBlogApplication.Data;
 using TheBlogApplication.Models;
 using TheBlogApplication.Services;
+using TheBlogApplication.ViewModels;
 
 namespace TheBlogApplication
 {
@@ -30,8 +31,7 @@ namespace TheBlogApplication
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseNpgsql(
-                    Configuration.GetConnectionString("DefaultConnection")));
+                options.UseNpgsql(ConnectionService.GetConnectionString(Configuration)));
 
             services.AddDatabaseDeveloperPageExceptionFilter();
 
@@ -46,6 +46,17 @@ namespace TheBlogApplication
 
             //Register my custom DataService class
             services.AddScoped<DataService>();
+            services.AddScoped<BlogSearchService>();
+
+            //Register a preconfigured instance of the MailSettings class
+            services.Configure<MailSettings>(Configuration.GetSection("MailSettings"));
+            services.AddScoped<IBlogEmailSender, EmailService>();
+
+            //Register our Image Service
+            services.AddScoped<IImageService, BasicImageService>();
+
+            //Register the Slug Service
+            services.AddScoped<ISlugService, BasicSlugService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -72,6 +83,12 @@ namespace TheBlogApplication
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapControllerRoute(
+                    name: "SlugRoute",
+                    pattern: "BlogPosts/UrlFreindly/{slug}",
+                    defaults: new { controller = "Posts", action ="Details"}
+                    );
+
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");

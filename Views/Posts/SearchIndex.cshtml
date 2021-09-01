@@ -1,0 +1,51 @@
+﻿@using TheBlogApplication.Models
+@using TheBlogApplication.Services
+@using TheBlogApplication.Enums
+@using X.PagedList
+@using X.PagedList.Mvc.Core
+@using X.PagedList.Web.Common
+
+
+@inject IImageService imageService
+
+@model IPagedList<Post>
+
+<div class="container">
+    <div class="row">
+        @foreach (var post in Model)
+        {
+            <div class="col-sm-2 col-lg-4 mt-3">
+                <div class="card border-dark">
+                    <div class="card-body text-center">
+                        <div class="bg-warning">
+                            <hr class="card-hr" />
+                            <h5 class="card-title">@post.Title</h5>
+                            <hr class="card-hr" />
+                        </div>
+                        <div>
+                            <p class="card-text">@post.Abstract</p>
+                        </div>
+
+                        <br />
+                        <div class="text-center">
+                            <a class="btn btn-dark btn-sm btn-block mb-2" asp-action="Details" asp-controller="Posts" asp-route-slug="@post.Slug">Read More</a>
+                        </div>
+
+                    </div>
+                    <img class="card-img-bottom" src="@imageService.DecodeImage(post.ImageData,  post.ContentType)" />
+                </div>
+
+            </div>
+        }
+    <div class="col-12">
+        <!-- Pager-->
+        <div class="d-flex justify-content-start mb-4 mt-4">
+            <div>
+                @Html.PagedListPager(Model, page => Url.Action("SearchIndex", new { page = page }),
+                    PagedListRenderOptionsBase.PageNumbersOnly)
+            </div>
+        </div>
+    </div>
+    </div>
+    
+</div>

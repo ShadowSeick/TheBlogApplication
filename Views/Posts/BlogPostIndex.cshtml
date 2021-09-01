@@ -1,7 +1,11 @@
 ﻿@using TheBlogApplication.Services
 @using TheBlogApplication.Models
+@using X.PagedList
+@using X.PagedList.Mvc.Core
+@using X.PagedList.Web.Common
+
 @inject IImageService imageService
-@model IEnumerable<Post>
+@model IPagedList<Post>
 
 @{
     ViewData["Title"] = "Index";
@@ -20,15 +24,17 @@
         <thead>
             <tr>
                 <th>
-                    @Html.DisplayNameFor(model => model.Image)
+                    Image
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.Title)
+                    Title
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.Abstract)
+                    Abstract
                 </th>
+                <th>
 
+                </th>
 
             </tr>
         </thead>
@@ -63,5 +69,13 @@
             }
         </tbody>
     </table>
+
+    <!-- Pager-->
+    <div class="d-flex justify-content-start mb-4 mt-4">
+        <div>
+            @Html.PagedListPager(Model, page => Url.Action("BlogPostIndex", new { id = Model.FirstOrDefault().BlogId, page = page }),
+                PagedListRenderOptionsBase.PageNumbersOnly)
+        </div>
+    </div>
 
 </div>

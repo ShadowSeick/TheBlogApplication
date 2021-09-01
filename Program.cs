@@ -25,7 +25,6 @@ namespace TheBlogApplication
                                   .GetRequiredService<DataService>();
 
             await dataService.ManageDataAsync();
-
             host.Run();
         }
 
