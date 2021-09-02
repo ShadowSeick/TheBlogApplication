@@ -3,8 +3,8 @@
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "ec2-52-214-178-113.eu-west-1.compute.amazonaws.com",
-      "sslPort": 44384
+      "applicationUrl": "https://the-blog-application.herokuapp.com/",
+      "sslPort": 5432
     }
   },
   "profiles": {
