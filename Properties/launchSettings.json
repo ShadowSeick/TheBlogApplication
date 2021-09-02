@@ -3,7 +3,7 @@
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "http://localhost:45326",
+      "applicationUrl": "ec2-52-214-178-113.eu-west-1.compute.amazonaws.com",
       "sslPort": 44384
     }
   },
