@@ -69,8 +69,7 @@ namespace TheBlogApplication.Controllers
                 comment.Created = DateTime.Now;
                 _context.Add(comment);
                 await _context.SaveChangesAsync();
-                Console.WriteLine("The comment is charging", comment.Created, comment.BlogUserId, comment);
-                return RedirectToAction("Details", "Posts", new { slug }, "commentSection");
+                return RedirectToAction(nameof(Index));
             }
             
             return View(comment);
