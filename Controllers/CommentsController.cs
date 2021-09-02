@@ -61,7 +61,7 @@ namespace TheBlogApplication.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("PostId,Body")] Comment comment, string slug)
+        public async Task<IActionResult> Create([Bind("PostId,Body")] Comment comment)
         {
             if (ModelState.IsValid)
             {
@@ -69,7 +69,7 @@ namespace TheBlogApplication.Controllers
                 comment.Created = DateTime.Now;
                 _context.Add(comment);
                 await _context.SaveChangesAsync();
-                return RedirectToAction("Details", "Posts", new { slug }, "commentSection");
+                return RedirectToAction(nameof(Index));
             }
             
             return View(comment);

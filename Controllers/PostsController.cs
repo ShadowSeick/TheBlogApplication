@@ -67,6 +67,7 @@ namespace TheBlogApplication.Controllers
             var pageNumber = page ?? 1;
             var pageSize = 5;
 
+            //var posts = _context.Posts.Where(p => p.BlogId == id).ToList();
             var posts = await _context.Posts
                 .Where(p => p.BlogId == id && p.ReadyStatus == ReadyStatus.ProductionReady)
                 .OrderByDescending(p => p.Created)
