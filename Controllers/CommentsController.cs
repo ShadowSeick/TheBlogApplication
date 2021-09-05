@@ -47,15 +47,6 @@ namespace TheBlogApplication.Controllers
         //Use my soft delete bool
         //}
 
-        // GET: Comments/Create
-        //public IActionResult Create()
-        //{
-        //    ViewData["BlogUserId"] = new SelectList(_context.Users, "Id", "Id");
-        //    ViewData["ModeratorId"] = new SelectList(_context.Users, "Id", "Id");
-        //    ViewData["PostId"] = new SelectList(_context.Posts, "Id", "Abstract");
-        //    return View();
-        //}
-
         // POST: Comments/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.

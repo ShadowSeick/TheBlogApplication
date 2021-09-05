@@ -12,70 +12,72 @@
 }
 
 <div class="container">
-    <h1>Index</h1>
+
+
+    <div class="row">
+        <div class="col-12 d-flex justify-content-center"><h5 class="text-uppercase section-title">latest posts</h5></div>
+        <div class="col-2 col-md-1 d-block m-auto"><hr /></div>
+    </div>
 
     @if (User.IsInRole("Administrator"))
     {
         <p>
-            <a asp-action="Create">Create New</a>
+            <a class="btn btn-outline-dark text-decoration-none" asp-action="Create">Create New</a>
         </p>
     }
-    <table class="table">
-        <thead>
-            <tr>
-                <th>
-                    Image
-                </th>
-                <th>
-                    Title
-                </th>
-                <th>
-                    Abstract
-                </th>
-                <th>
+    <div class="row row-cols-1 d-flex justify-content-center">
 
-                </th>
+        @foreach (var item in Model)
+        {
+            <article id="main-article" class="col-lg-8 d-flex flex-column align-items-center">
+                <div class="row w-100 gx-3">
+                    <div class="col-1"></div>
+                    <div id="post-date" class="col-1 pe-5 py-5">
+                        <div class="text-uppercase d-flex flex-column align-items-center fw-bold">
+                            <h2 class="display-4 text-primary fw-bold">@item.Created.ToString("dd")</h2>
+                            <h5 class="text-black post-date-month">@item.Created.ToString("MMMM")</h5>
+                        </div>
+                    </div>
+                    <div class="col p-5">
+                        <div class="row">
+                            <div class="col-1"></div>
+                            <div class="col">
+                                <header class="text-uppercase">
+                                    <a asp-action="Details" asp-route-slug="@item.Slug">
+                                        <h2 class="text-uppercase">
+                                            @Html.DisplayFor(modelItem => item.Title)
+                                        </h2>
+                                    </a>
+                                </header>
+                                <div class="lead">@*@($"By {item.BlogUser.FullName}")*@</div>
+                                <p>
+                                    @Html.DisplayFor(modelItem => item.Abstract)
+                                </p>
+                            </div>
+                        </div>
+                    </div>
 
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
-                <tr>
-                    <td>
-                        <img src="@imageService.DecodeImage(item.ImageData, item.ContentType)" />
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Title)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Abstract)
-                    </td>
-                    @if (User.IsInRole("Administrator"))
-                    {
-                        <td>
-                            <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                            <a asp-action="Details" asp-route-slug="@item.Slug">Details</a> |
-                            <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                        </td>
-                    }
-                    else
-                    {
-                        <td>
-                            <a asp-action="Details" asp-route-slug="@item.Slug">Details</a>
-                        </td>
-                    }
-                </tr>
-            }
-        </tbody>
-    </table>
+                    <div class="col-12 d-flex justify-content-end">
+                        @if (User.IsInRole("Administrator"))
+                        {
+                            <a class="btn btn-sm btn-outline-primary rounded-0" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                            <a class="btn-sm btn-outline-danger rounded-0" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                        }
+                    </div>
+                </div>
+
+            </article>
+
+        }
+    </div>
 
     <!-- Pager-->
-    <div class="d-flex justify-content-start mb-4 mt-4">
-        <div>
+    <div class="row mb-4 mt-4">
+        <div class="col d-flex justify-content-end">
             @Html.PagedListPager(Model, page => Url.Action("BlogPostIndex", new { id = Model.FirstOrDefault().BlogId, page = page }),
                 PagedListRenderOptionsBase.PageNumbersOnly)
         </div>
+        <div class="col-1 col-md-2"></div>
     </div>
 
 </div>

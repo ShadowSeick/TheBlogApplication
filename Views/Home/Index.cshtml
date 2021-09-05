@@ -1,8 +1,12 @@
 ﻿@using TheBlogApplication.Models
+@using TheBlogApplication.Services
+@using Microsoft.AspNetCore.Identity
 @using X.PagedList
 @using X.PagedList.Mvc.Core
 @using X.PagedList.Web.Common
 
+@inject UserManager<BlogUser> userManager
+@inject IImageService imageService
 @model IPagedList<Blog>
 
 @{
@@ -11,31 +15,75 @@
 
 <div class="container px-4 px-lg-5">
     <div class="row gx-4 gx-lg-5 justify-content-center">
-        <div class="col-md-10 col-lg-8 col-xl-7">
-            @foreach (var blog in Model)
-            {
-                <div class="post-preview">
-                    <a asp-controller="Posts" asp-action="BlogPostIndex" asp-route-id="@blog.Id">
-                        <h2 class="post-title">
-                            @blog.Name
-                        </h2>
-                        <h3 class="post-subtitle">
-                            @blog.Desciption
-                        </h3>
-                    </a>
-                    <p class="post-meta">
-                        Authored by
-                        <a href="#!">@blog.BlogUser.FullName</a>
-                        on @blog.Created.ToString("MMM dd, yyyy")
-                    </p>
+        <div class="col">
+            <div class="row row-cols-1 row-cols-md-2 gx-3 gy-4">
+                @{ int count = 0;} 
+                @foreach (var blog in Model)
+                {
+                    <div class="col">
+                        <a  onmouseover="animateText(@($"blogDescription{count}"))" asp-action="BlogPostIndex" asp-controller="Posts" asp-route-id="@blog.Id">
+                            <img src="@imageService.DecodeImage(blog.ImageData, blog.ContentType)" class="img-fluid" alt="@blog.Name">
+                        </a>
+                        <div id=@($"blogDescription{count}") class="position-in-place">
+                            <a asp-action="BlogPostIndex" asp-controller="Posts" asp-route-id="@blog.Id">
+                                <h2 class="text-capitalize">@blog.Name</h2>
+                                <p class="mt-0">
+                                    @blog.Desciption <br />
+                                </p>
+                            </a>
+                            <span class="text-muted">
+                                @if (blog.Posts.Any())
+                                {
+                                    @blog.Posts.OrderByDescending(p => p.Created).First().Created.ToString("MMM dd, yyyy")
+                                }
+                                else
+                                {
+                                    @blog.Created.ToString("MMM dd, yyyy")
+                                }
+                            </span>
+                        </div>
+                    @if (User.IsInRole("Administrator"))
+                    {
+                        <div class="mt-3">
+                            <button type="submit" class="btn btn-sm btn-outline-primary rounded-0 text-capitalize" asp-action="Edit" asp-controller="Blogs">edit</button>
+                            <button class="btn btn-sm btn-outline-danger rounded-0 text-capitalize" data-bs-toggle="modal" data-bs-target="#deleteModal">delete</button>
+                        </div>
+                    }
                 </div>
-                <!-- Divider-->
-                <hr class="my-4" />
-            }
+                @* Modals *@
+                <div class="modal fade" id="editModal">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+
+
+                            <!-- Modal body -->
+                            <div class="modal-body">
+                                <form asp-action="Delete" asp-controller="Blogs">
+                                    @Html.Hidden("Id", blog.Id)
+
+                                    <div class="modal-body">
+                                        <h4 class="modal-title">Do you want to delete it?</h4>
+                                    </div>
+
+                                    <button class="btn-sm btn-dark border-success fw-bold text-uppercase" type="submit">delete</button>
+                                </form>
+                            </div>
+
+                            <!-- Modal footer -->
+                            <div class="modal-footer">
+                                <button type="button" class="btn-sm btn-dark fw-bold" data-bs-dismiss="modal">CLOSE</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                    count++;
+                }
+            </div>
 
 
             <!-- Pager-->
-            <div class="d-flex justify-content-start mb-4">
+            <div class="d-flex justify-content-start mb-4 mt-4">
                 <div>
                     @Html.PagedListPager(Model, page => Url.Action("index", new { page = page }),
                         PagedListRenderOptionsBase.PageNumbersOnly)
@@ -44,3 +92,12 @@
         </div>
     </div>
 </div>
+
+@section Scripts{ 
+    <script>
+        function animateText(id) {
+            $(id).css("opacity", "1");
+            $(id).css("margin-top", "0");
+        }
+    </script>
+}
