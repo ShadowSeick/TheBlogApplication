@@ -19,7 +19,9 @@ namespace TheBlogApplication.Services
 
         public IQueryable<Post> Search(string searchTerm)
         {
-            var posts = _context.Posts.Where(p => p.ReadyStatus == ReadyStatus.ProductionReady).AsQueryable();
+            var posts = _context.Posts.Where(p => p.ReadyStatus == ReadyStatus.ProductionReady)
+                .AsQueryable();
+
             if (searchTerm is not null)
             {
                 searchTerm = searchTerm.ToLower();

@@ -12,30 +12,46 @@
 
 <div class="container">
     <div class="row">
-        @foreach (var post in Model)
+        @foreach (var item in Model)
         {
-            <div class="col-sm-2 col-lg-4 mt-3">
-                <div class="card border-dark">
-                    <div class="card-body text-center">
-                        <div class="bg-warning">
-                            <hr class="card-hr" />
-                            <h5 class="card-title">@post.Title</h5>
-                            <hr class="card-hr" />
-                        </div>
-                        <div>
-                            <p class="card-text">@post.Abstract</p>
-                        </div>
-
-                        <br />
-                        <div class="text-center">
-                            <a class="btn btn-dark btn-sm btn-block mb-2" asp-action="Details" asp-controller="Posts" asp-route-slug="@post.Slug">Read More</a>
-                        </div>
-
+        <article id="main-article" class="col-lg-8 d-flex flex-column align-items-center">
+            <div class="row w-100 gx-3">
+                <div class="col-1"></div>
+                <div id="post-date" class="col-1 pe-5 py-5 ">
+                    <div class="text-uppercase d-flex flex-column align-items-center fw-bold">
+                        <h2 class="display-4 text-primary fw-bold">@item.Created.ToString("dd")</h2>
+                        <h5 class="text-black post-date-month">@item.Created.ToString("MMMM")</h5>
                     </div>
-                    <img class="card-img-bottom" src="@imageService.DecodeImage(post.ImageData,  post.ContentType)" />
+                </div>
+                <div class="col p-5">
+                    <div class="row">
+                        <div class="col-1"></div>
+                        <div class="col">
+                            <header class="text-uppercase">
+                                <a asp-action="Details" asp-route-slug="@item.Slug">
+                                    <h2 class="text-uppercase">
+                                        @Html.DisplayFor(modelItem => item.Title)
+                                    </h2>
+                                </a>
+                            </header>
+                            <div class="lead">@*@($"In {item.Blog.Name}")*@</div>
+                            <p>
+                                @Html.DisplayFor(modelItem => item.Abstract)
+                            </p>
+                        </div>
+                    </div>
                 </div>
 
+                <div class="col-12 d-flex justify-content-end">
+                    @if (User.IsInRole("Administrator"))
+                    {
+                        <a class="btn btn-sm btn-outline-primary rounded-0" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                        <a class="btn-sm btn-outline-danger rounded-0" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    }
+                </div>
             </div>
+
+        </article>
         }
     <div class="col-12">
         <!-- Pager-->
