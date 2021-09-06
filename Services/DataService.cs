@@ -67,8 +67,8 @@ namespace TheBlogApplication.Services
             {
                 Email = "alcolka@gmail.com",
                 UserName = "alcolka@gmail.com",
-                FirstName = "Jon",
-                LastName = "Doe",
+                FirstName = "Adrián",
+                LastName = "Muñoz",
                 PhoneNumber = "(800) 500-1213",
                 EmailConfirmed = true
             };
