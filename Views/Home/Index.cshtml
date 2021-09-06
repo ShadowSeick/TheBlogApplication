@@ -20,11 +20,11 @@
                 @{ int count = 0;} 
                 @foreach (var blog in Model)
                 {
-                    <div class="col">
-                        <a  onmouseover="animateText(@($"blogDescription{count}"))" asp-action="BlogPostIndex" asp-controller="Posts" asp-route-id="@blog.Id">
+                    <div class="col text-center h-100">
+                        <a  onmouseover="animateText('#blogDescription@(count)')" asp-action="BlogPostIndex" asp-controller="Posts" asp-route-id="@blog.Id">
                             <img src="@imageService.DecodeImage(blog.ImageData, blog.ContentType)" class="img-fluid" alt="@blog.Name">
                         </a>
-                        <div id=@($"blogDescription{count}") class="position-in-place border border-1 p-3">
+                        <div id="blogDescription@(count)" class="position-in-place p-3 bg-light">
                             <a asp-action="BlogPostIndex" asp-controller="Posts" asp-route-id="@blog.Id">
                                 <h2 class="text-capitalize">@blog.Name</h2>
                             </a>

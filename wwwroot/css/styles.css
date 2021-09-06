@@ -11104,6 +11104,10 @@ blockquote {
 footer {
   padding-top: 3rem;
   padding-bottom: 3rem;
+  clear: both !important!;
+  position: relative !important;
+  height: 200px !important;
+  margin-top: -200px !important;
 }
 
 header.masthead {
@@ -11174,7 +11178,7 @@ header.masthead .post-heading .meta a {
 }
 @media (min-width: 992px) {
   header.masthead {
-    padding-top: 12.5rem;
+    padding-top: 10rem;
     padding-bottom: 12.5rem;
   }
   header.masthead .page-heading h1, header.masthead .page-heading .h1,
