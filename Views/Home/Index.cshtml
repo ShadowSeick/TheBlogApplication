@@ -16,7 +16,7 @@
 <div class="container px-4 px-lg-5">
     <div class="row gx-4 gx-lg-5 justify-content-center">
         <div class="col">
-            <div class="row row-cols-1 row-cols-md-2 gx-3 gy-4">
+            <div class="row row-cols-1 row-cols-lg-2 gx-3 gy-4">
                 @{ int count = 0;} 
                 @foreach (var blog in Model)
                 {
@@ -24,13 +24,13 @@
                         <a  onmouseover="animateText(@($"blogDescription{count}"))" asp-action="BlogPostIndex" asp-controller="Posts" asp-route-id="@blog.Id">
                             <img src="@imageService.DecodeImage(blog.ImageData, blog.ContentType)" class="img-fluid" alt="@blog.Name">
                         </a>
-                        <div id=@($"blogDescription{count}") class="position-in-place">
+                        <div id=@($"blogDescription{count}") class="position-in-place border border-1 p-3">
                             <a asp-action="BlogPostIndex" asp-controller="Posts" asp-route-id="@blog.Id">
                                 <h2 class="text-capitalize">@blog.Name</h2>
-                                <p class="mt-0">
-                                    @blog.Desciption <br />
-                                </p>
                             </a>
+                            <p class="mt-0 mb-2">
+                                @blog.Desciption
+                            </p>
                             <span class="text-muted">
                                 @if (blog.Posts.Any())
                                 {
@@ -45,38 +45,11 @@
                     @if (User.IsInRole("Administrator"))
                     {
                         <div class="mt-3">
-                            <button type="submit" class="btn btn-sm btn-outline-primary rounded-0 text-capitalize" asp-action="Edit" asp-controller="Blogs">edit</button>
-                            <button class="btn btn-sm btn-outline-danger rounded-0 text-capitalize" data-bs-toggle="modal" data-bs-target="#deleteModal">delete</button>
+                            <a type="button" class="btn btn-sm btn-outline-primary rounded-0 text-capitalize" asp-action="Edit" asp-controller="Blogs" asp-route-id="@blog.Id">edit</a>
+                            <a type="button" class="btn btn-sm btn-outline-danger rounded-0 text-capitalize" asp-action="Delete" asp-controller="Blogs" asp-route-id="@blog.Id">delete</a>
                         </div>
                     }
                 </div>
-                @* Modals *@
-                <div class="modal fade" id="editModal">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-
-
-                            <!-- Modal body -->
-                            <div class="modal-body">
-                                <form asp-action="Delete" asp-controller="Blogs">
-                                    @Html.Hidden("Id", blog.Id)
-
-                                    <div class="modal-body">
-                                        <h4 class="modal-title">Do you want to delete it?</h4>
-                                    </div>
-
-                                    <button class="btn-sm btn-dark border-success fw-bold text-uppercase" type="submit">delete</button>
-                                </form>
-                            </div>
-
-                            <!-- Modal footer -->
-                            <div class="modal-footer">
-                                <button type="button" class="btn-sm btn-dark fw-bold" data-bs-dismiss="modal">CLOSE</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
                     count++;
                 }
             </div>

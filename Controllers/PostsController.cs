@@ -164,9 +164,11 @@ namespace TheBlogApplication.Controllers
                     });
 
                 }
+                Console.WriteLine(post.BlogId);
 
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+
+                return Redirect($"/Posts/BlogPostIndex/{post.BlogId}");
             }
 
             //This is code for reloading the page if the post is not valid

@@ -22,7 +22,7 @@
             <div class="col fw-light font-monospace">
                 @($"By {Model.BlogUser.FullName} / In {Model.Blog.Name} / {Model.Created.ToString("MMMM dd, yyyy")} / {Model.Comments.Count} Comments ")
             </div>
-            <div class="col">@Model.Abstract</div>
+            <div class="col"><p class="lead h5 mt-3 fs-4">@Model.Abstract</p></div>
             <div class="col">
                 @Html.Raw(Model.Content)
             </div>
@@ -46,7 +46,7 @@
 
 
 <div class="container mt-4">
-    <div class="row mb-5">
+    <div class="row mb-5 d-flex justify-content-center">
         <div class="col-12 text-center text-capitalize">
             @if (@Model.Comments.Count > 1)
             {
@@ -66,8 +66,8 @@
         </div>
         @if (User.Identity.IsAuthenticated)
         {
-            <div class="col-2"></div>
-            <div class="col">
+
+            <div class="col-11 col-md-10">
                 <form asp-action="Create" asp-controller="Comments" method="post">
                     @Html.Hidden("PostId", Model.Id)
                     @Html.Hidden("Slug", Model.Slug)
@@ -78,7 +78,7 @@
                     <button type="submit" class="btn btn-dark btn-lg rounded-0 text-capitalize d-block ms-auto">submit</button>
                 </form>
             </div>
-            <div class="col-2"></div>
+
         }
         else
         {
@@ -89,15 +89,16 @@
 
     </div>
 
-    <div class="row">
-        <div class="col-2"></div>
-        <div class="col">
+    <div class="row d-flex justify-content-center">
+        <div class="col col-md-9 col-lg-8">
             @{ var counter = 0; }
             @foreach (var comment in Model.Comments)
             {
-                <div class="media media-border p-0 mb-2 bg-light">
-                    <img class="mr-3 mt-3 rounded-circle" style="width:60px;" src="@imageService.DecodeImage(comment.BlogUser.ImageData, comment.BlogUser.ContentType)" />
-                    <div class="media-body">
+                <div class="row p-0 mb-2 bg-transparent d-flex justify-content-end">
+                    <div class="col-3 col-md-2 me-sm-1 me-3">
+                        <img class="ms-auto d-block rounded-circle" style="width:80px;" src="@imageService.DecodeImage(comment.BlogUser.ImageData, comment.BlogUser.ContentType)" />
+                    </div>
+                    <div class="col col-md">
                         <h4>@comment.BlogUser.FullName</h4>
                         <small>
                             <i>
@@ -118,21 +119,23 @@
                                 }
                             </i>
                         </small>
+                        </div>
+                    <div class="col-sm-9 col-md-10 px-3">
                         @if (string.IsNullOrEmpty(comment.Body))
                         {
-                            <p class="text-danger fst-italic">
+                            <p class="text-danger fst-italic mt-2">
                                 This comment has been deleted
                             </p>
                         }
                         else if (comment.Moderated is not null)
                         {
-                            <p>
+                            <p class="mt-2">
                                 @comment.ModeratedBody
                             </p>
                         }
                         else if (comment.Deleted is null)
                         {
-                            <p>
+                            <p class="mt-2">
                                 @comment.Body
                             </p>
                         }
@@ -141,8 +144,7 @@
 
                         @if (comment.Moderated is null && comment.Deleted is null && comment.BlogUserId == userManager.GetUserId(User))
                         {
-                            <hr />
-                            <button class="btn btn-dark btn-sm d-block ms-auto text-capitalize" data-bs-toggle="modal" data-bs-target="#editModal">edit</button>
+                            <button class="btn btn-dark btn-sm d-block rounded-0 ms-auto text-capitalize" data-bs-toggle="modal" data-bs-target="#editModal">edit</button>
                         }
 
                         @* SECTION 2: RENDER THE MODERATE AND DELETE BUTTONS *@
@@ -252,7 +254,6 @@
                 counter++;
             }
         </div>
-        <div class="col-2"></div>
     </div>
 </div>
 
